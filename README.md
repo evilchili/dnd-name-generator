@@ -12,7 +12,7 @@ The `fanlang` command-line utility supports three commands:
 
 ### Examples:
 
-```
+```shell
 % fanlang --language=dwarvish names --count 5
 Tiny Châ Pothesadottyr
 Khâkhu Zhûdothir
@@ -21,14 +21,14 @@ Cû Tozhon
 Big Pâ Thadottyr
 ```
 
-```
+```shell
 % fanlang --language=dwarvish text
 Cû ne do tho khâ tasha, vê wûva lû, ku phu thâ thê, tûko kê, pevo kâ têtetv zha 
 pataso keks khate? Fâ zhû shû yf pho pa me. Dupha dê thê khâ! Shikm tu! Cê 
 sâdêto. Dê yo nâ topho, my sû pida phe, vi phûtw châcho, po sotê?
 ```
 
-```
+```shell
 % fanlang list
 Abyssal                                                                         
 Celestial                                                                       
@@ -54,7 +54,7 @@ The default language pack is [language.languages](language/languages/); each sub
 
 You can override `fanlang`'s default language pack by specifying the `FANLANG_LANGUAGE_PACK` environment variable:
 
-```
+```shell
 # Create your ancient_elvish module in campaign/language_pack/ancient_elvish
 % FANLANG_LANGUAGE_PACK=campaign.language_pack fanlang list
 Ancient Elvish
@@ -64,7 +64,7 @@ Ancient Elvish
 
 'common' is the default language module. You can override this by setting the `FANLANG_DEFAULT_LANGUAGE` environment variable:
 
-```
+```shell
 % FANLANG_DEFAULT_LANGUAGE=gnomish fanlang names --count=1
 Jey Lea
 ```
@@ -76,7 +76,7 @@ You can read about creating custom language packs below.
 
 You can load all supported languages in a language pack using `language.load_langauge_pack()`:
 
-```
+```python
 >>> import language
 >>> language_pack, supported_languages = language.load_language_pack()
 >>> common = supported_languages['common']
@@ -96,7 +96,7 @@ Proitsiiiy be itkif eesof detytaen. Ojaot tyskuaz apsoo nirtoet prenao.
 
 You can also load individual languages directly:
 
-```
+```python
 >>> from language.languages import common
 >>> common.Language.word(2)
 ['apsoo', 'nirtoet']
@@ -108,7 +108,7 @@ You can also load individual languages directly:
 
 Language packs are python packages with the following structure:
 
-```
+```python
 language_pack:
   __init__.py
   language_name:
@@ -135,7 +135,7 @@ Read on for a discussion of each of these components.
 Let's look at a simple example, the Gnomish language. Here's the `Language`
 subclass defined in `base.py`:
 
-```
+```python
 from language import defaults, types
 from .rules import rules
 
@@ -228,7 +228,7 @@ Rules are a set of callables that accept a language instance and a word. The cal
 
 [The language.rules module(language/rules.py) contains a number of useful rules that are applied by default to most languages, mostly used to aid readability and generate words that are pronouncable. Here's a simple example:
 
-```
+```python
 def too_many_consonants(language: Language, word: str) -> bool:
     found = re.compile(r"[bcdfghjklmnpqrstvwxz]{3}").findall(word)
     if found == []:
@@ -247,7 +247,7 @@ Rules are passed as a set of callables to the `Language` constructor, so they ca
 
 Name generators are similar to Language generators, but with a few key differences. Here is a simple example, also from the Gnomish language:
 
-```
+```python
 from language import types
 from language.languages.gnomish import Language
 
@@ -269,7 +269,7 @@ Name Generators are defined with a Language, and one or more `NameSet` templates
 
 By default, both **names** and **surnames** are generated automatically by calling `NameGenerator.language.word()`. Thus, the simplest name generator will simply follow all the rules of the language itself and generate one or more random words. You can override multiple aspects of a language's rules for word generation by passing `NameGenerator` additional arguments. For example, here is a generator for the names of locations in the Elvish language:
 
-```
+```python
 from language import types, defaults
 from language.languages.elvish import Language
 
@@ -293,7 +293,7 @@ Note how we declare new `syllables`, `affixes`, and `adjectives`, which will rep
 
 Sometimes we need even more control than providing new syllable sets and weighted sets for graphemes. Subclassing `NameGenerator` gives you significant control over how names are constructed. For example, Elvish surnames are based on Elvish place names; to accomplish this, we subclass `NameGenerator` and override the method used to generate surnames:
 
-```
+```python
 class ElvishNameGenerator(types.NameGenerator):
     def __init__(self):
         super().__init__(
