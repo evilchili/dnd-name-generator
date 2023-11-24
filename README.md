@@ -113,25 +113,27 @@ language_pack:
   __init__.py
   language_name:
     __init__.py
+    README.md
     base.py
     names.py
     rules.py
   ...
 ```
 
-### Languge Modules
+### Language Modules
 
 A language consists of several submodules:
 
-* `base.py`, which contains grapheme definitions and the `Language` subclasses;
+* `base.py`, which contains grapheme definitions and a `Language` subclass;
 * `names.py`, which defines the `NameGenerator` subclasses; and
 * `rules.py`, which is optional, and defines the rules all words in the language must follow.
 
+Read on for a discussion of each of these components.
 
-### Language Construction
+## Language Generators
 
 Let's look at a simple example, the Gnomish language. Here's the `Language`
-subclass that would be defined in `base.py`:
+subclass defined in `base.py`:
 
 ```
 from language import defaults, types
@@ -162,7 +164,7 @@ Language = types.Language(
 )
 ```
 
-#### Defining Graphemes
+### Defining Graphemes
 
 A Language definition includes *graphemes*, the basic building blocks of any
 language. We start with **vowels**, **consonants**, which are required in every
@@ -182,7 +184,7 @@ a `WeightedSet` where each member is given the same weight. Normally this
 function also inserts the grapheme `("", 1.0)` into the set, but we disable
 this behaviour by specifying `blank=False`.
 
-#### Defining Syllables
+### Defining Syllables
 
 A syllable is a collection of graphemes, including at least one vowel. When we
 create words, we select a random syllable template from a `SyllableSet`, which
@@ -194,14 +196,14 @@ A syllable's template consists of a comma-separated string of grapheme names.
 In Gnomish, we have two possible syllable templates, `consonant,vowel,vowel`
 and the shorter `consonant,vowel`, which will be selected one third as often.
 
-Templates can also support randomly-selected graphemes by joining two or more
+Templates also support randomly-selected graphemes by joining two or more
 grapheme types with a vertical bar, for example `vowel|consonant` would choose
 one or the other; `vowel|consonant,vowel` would result in a vowel or
 a consonant followed by a vowel.
 
 ### How Words Are Constructed:
 
-The main interface for callers is word(), which returns a randomly-generated
+The main interface for callers is `word()`, which returns a randomly-generated
 word in the language according to the following algorithm:
 
 1. Choose a random syllable from the syllable set
@@ -215,3 +217,98 @@ word in the language according to the following algorithm:
 When graphemes are chosen, the following rules are applied:
 * Every syllable must have at least one vowel; and
 * A syllable may never have three consecutive consonants.
+
+### A More Complex Example
+
+[The Common language](language/languages/common/base.py) is a more complex definition, with language-specific prefixes, suffixes, vowels, and consonants, and many possible syllables. This results in highly-varied text.
+
+## Rules
+
+Rules are a set of callables that accept a language instance and a word. The callable returns `True` if the word passes some test, and `False` otherwise. Every randomly-generated word must pass all defined rules for the language, or it is rejected.
+
+[The language.rules module(language/rules.py) contains a number of useful rules that are applied by default to most languages, mostly used to aid readability and generate words that are pronouncable. Here's a simple example:
+
+```
+def too_many_consonants(language: Language, word: str) -> bool:
+    found = re.compile(r"[bcdfghjklmnpqrstvwxz]{3}").findall(word)
+    if found == []:
+        return True
+    logger.debug(f"{word} has too many contiguous consonants: {found}")
+    return False
+```
+
+This rule ensures that a word does not contain more than 3 english consonants in a row.
+
+### Defining Language-Specific Rules
+
+Rules are passed as a set of callables to the `Language` constructor, so they can be anything you want, defined anywhere you want. By convention, language packs use a separate `rules` module when building custom rule sets.
+
+## Name Generators
+
+Name generators are similar to Language generators, but with a few key differences. Here is a simple example, also from the Gnomish language:
+
+```
+from language import types
+from language.languages.gnomish import Language
+
+Name = types.NameGenerator(
+    language=Language,
+    templates=types.NameSet(
+        (types.NameTemplate("name,surname"), 1.0),
+    ),
+)
+NobleName = Name
+```
+
+In Gnomish, names are straightforward, consisting of a name and a surname, and there is no distinction between regular names and the names of the nobility. By contrast, [Elvish names are complex](language/languages/elvish/names.py), consisting of multiple distinct parts, including place names, affixes, and separate rules for common and noble name construction.
+
+
+### Defining Names
+
+Name Generators are defined with a Language, and one or more `NameSet` templates. `NameSets` are equivalent to `SyllableSets`, but instead of creating templates for the construction of syllables from sequences of graphemes, they define sequences of parts of names -- **names**, **surnames**, **titles**, **nicknames**, and so on. They follow the same semantics as `Syllables`, allowing for a large variety of potential names.
+
+By default, both **names** and **surnames** are generated automatically by calling `NameGenerator.language.word()`. Thus, the simplest name generator will simply follow all the rules of the language itself and generate one or more random words. You can override multiple aspects of a language's rules for word generation by passing `NameGenerator` additional arguments. For example, here is a generator for the names of locations in the Elvish language:
+
+```
+from language import types, defaults
+from language.languages.elvish import Language
+
+PlaceName = types.NameGenerator(
+    language=Language,
+    syllables=types.SyllableSet(
+        (types.Syllable(template="vowel,vowel|consonant,vowel|consonant"), 1.0),
+        (types.Syllable(template="consonant,vowel|consonant,vowel|consonant"), 0.3),
+    ),
+    templates=types.NameSet(
+        (types.NameTemplate("affix,name"), 1.0),
+    ),
+    affixes=types.WeightedSet(("el", 1.0)),
+    adjectives=defaults.adjectives,
+)
+```
+
+Note how we declare new `syllables`, `affixes`, and `adjectives`, which will replace the `Language`'s default behaviours. 
+
+#### Subclassing
+
+Sometimes we need even more control than providing new syllable sets and weighted sets for graphemes. Subclassing `NameGenerator` gives you significant control over how names are constructed. For example, Elvish surnames are based on Elvish place names; to accomplish this, we subclass `NameGenerator` and override the method used to generate surnames:
+
+```
+class ElvishNameGenerator(types.NameGenerator):
+    def __init__(self):
+        super().__init__(
+            language=Language,
+            syllables=Language.syllables,
+            templates=types.NameSet(
+                (types.NameTemplate("name,affix,surname"), 1.0),
+            ),
+            affixes=types.equal_weights(["am", "an", "al", "um"], weight=1.0, blank=False),
+            adjectives=defaults.adjectives,
+            titles=defaults.titles,
+            suffixes=suffixes,
+        )
+        self.place_generator = PlaceName
+
+    def get_surname(self) -> str:
+        return self.place_generator.name()[0]["name"][0]
+```
