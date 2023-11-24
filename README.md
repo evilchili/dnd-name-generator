@@ -58,7 +58,7 @@ You can override `fanlang`'s default language pack by specifying the `FANLANG_LA
 # Create your ancient_elvish module in campaign/language_pack/ancient_elvish
 % FANLANG_LANGUAGE_PACK=campaign.language_pack fanlang list
 Ancient Elvish
-``
+```
 
 ### Setting the Default Language
 
