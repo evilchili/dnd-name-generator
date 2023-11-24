@@ -1,11 +1,84 @@
-# D&D Language Generator
+# D&D Name and Language Generator
 
 This package is a fantasy language generator. By defining a number of characteristics about your imagined language -- the graphemes, their relative frequency distributions, the construction of syllables, and so on -- you can generate random but internally consistent gibberish that feels distinct, evocative, and appropriate to your setting.
 
-## Quick Start
+## Usage
+
+The `fanlang` command-line utility supports three commands:
+
+* **names**: generate names 
+* **text**: generate a paragraph of text 
+* **list**: list the supported language in the current language pack
+
+### Examples:
 
 ```
->>> from language imported supported_languages
+% fanlang --language=dwarvish names --count 5
+Tiny Châ Pothesadottyr
+Khâkhu Zhûdothir
+Quiet Ke Vêdothir
+Cû Tozhon
+Big Pâ Thadottyr
+```
+
+```
+% fanlang --language=dwarvish text
+Cû ne do tho khâ tasha, vê wûva lû, ku phu thâ thê, tûko kê, pevo kâ têtetv zha 
+pataso keks khate? Fâ zhû shû yf pho pa me. Dupha dê thê khâ! Shikm tu! Cê 
+sâdêto. Dê yo nâ topho, my sû pida phe, vi phûtw châcho, po sotê?
+```
+
+```
+% fanlang list
+Abyssal                                                                         
+Celestial                                                                       
+Common                                                                          
+Draconic                                                                        
+Dwarvish                                                                        
+Elvish                                                                          
+Gnomish                                                                         
+Halfling                                                                        
+Infernal                                                                        
+Lizardfolk                                                                      
+Orcish                                                                          
+Undercommon
+```
+
+## Language Packs
+
+A *Language Pack* is a python package that defines one or more language modules. The default language pack includes a number of D&D languages with rules built according to the conventions established by my D&D group over several years of play in our homebrew setting.
+
+The default language pack is [language.languages](language/languages/); each submodule contains a README that describes the basic characteristics of the language, along with examples.
+
+### Using Your Own Language Pack
+
+You can override `fanlang`'s default language pack by specifying the `FANLANG_LANGUAGE_PACK` environment variable:
+
+```
+# Create your ancient_elvish module in campaign/language_pack/ancient_elvish
+% FANLANG_LANGUAGE_PACK=campaign.language_pack fanlang list
+Ancient Elvish
+``
+
+### Setting the Default Language
+
+'common' is the default language module. You can override this by setting the `FANLANG_DEFAULT_LANGUAGE` environment variable:
+
+```
+% FANLANG_DEFAULT_LANGUAGE=gnomish fanlang names --count=1
+Jey Lea
+```
+
+You can read about creating custom language packs below.
+
+
+## Library Quick Start
+
+You can load all supported languages in a language pack using `language.load_langauge_pack()`:
+
+```
+>>> import language
+>>> language_pack, supported_languages = language.load_language_pack()
 >>> common = supported_languages['common']
 >>> common.word(2)
 ['apsoo', 'nirtoet']
@@ -21,23 +94,38 @@ Proitsiiiy be itkif eesof detytaen. Ojaot tyskuaz apsoo nirtoet prenao.
 }
 ```
 
-## Supported Languages
+You can also load individual languages directly:
 
-A number of D&D languages are defined, with rules built according to the
-conventions established by my D&D group over several years of play in our
-homebrew setting. You can find all supported languages [in the languages
-submodule](language/languages/); each submodule contains a README that
-describes the basic characteristics of the language, along with examples.
+```
+>>> from language.languages import common
+>>> common.Language.word(2)
+['apsoo', 'nirtoet']
+>>> str(common.Name)
+"Quiet" Gushi Murk Lirpusome
+```
 
-## Defining a Language
+## Defining a New Language Pack
 
-### Layout
+Language packs are python packages with the following structure:
+
+```
+language_pack:
+  __init__.py
+  language_name:
+    __init__.py
+    base.py
+    names.py
+    rules.py
+  ...
+```
+
+### Languge Modules
 
 A language consists of several submodules:
 
 * `base.py`, which contains grapheme definitions and the `Language` subclasses;
 * `names.py`, which defines the `NameGenerator` subclasses; and
-* `rules.py`, which is optional but defines the rules all words in the language must follow.
+* `rules.py`, which is optional, and defines the rules all words in the language must follow.
 
 
 ### Language Construction
