@@ -167,8 +167,8 @@ Language = types.Language(
 ### Defining Graphemes
 
 A Language definition includes *graphemes*, the basic building blocks of any
-language. We start with **vowels**, **consonants**, which are required in every
-language; Gnomish also includes **suffixes**, but no **prefixes**. Each
+language. We start with **vowels** and **consonants**, which are required in
+every language; Gnomish also includes **suffixes**, but no **prefixes**. Each
 grapheme is a `WeightedSet`, which is like a regular set except its members
 consist of a tuple of a string and a relative weight from 0.0 to 1.0. These
 weights will be used when selecting a random grapheme.
@@ -207,12 +207,12 @@ The main interface for callers is `word()`, which returns a randomly-generated
 word in the language according to the following algorithm:
 
 1. Choose a random syllable from the syllable set
-2. For each grapheme in the syllable
-    3. Choose a random grapheme template
-    4. Choose a random sequence from the language for that grapheme
-    5. Validate the word against the language rules
-6. Repeat 1-5 until a valid word is generated
-7. Add a prefix and suffix, if they are defined
+1. For each grapheme in the syllable:
+  * Choose a random grapheme template
+  * Choose a random sequence from the language for that grapheme
+  * Validate the word against the language rules
+1. Repeat 1-2 until a valid word is generated
+1. Add a prefix and suffix, if they are defined
 
 When graphemes are chosen, the following rules are applied:
 * Every syllable must have at least one vowel; and
@@ -226,7 +226,7 @@ When graphemes are chosen, the following rules are applied:
 
 Rules are a set of callables that accept a language instance and a word. The callable returns `True` if the word passes some test, and `False` otherwise. Every randomly-generated word must pass all defined rules for the language, or it is rejected.
 
-[The language.rules module(language/rules.py) contains a number of useful rules that are applied by default to most languages, mostly used to aid readability and generate words that are pronouncable. Here's a simple example:
+[The language.rules module](language/rules.py) contains a number of useful rules that are applied by default to most languages, mostly used to aid readability and generate words that are pronouncable. Here's a simple example:
 
 ```python
 def too_many_consonants(language: Language, word: str) -> bool:
