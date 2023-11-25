@@ -30,18 +30,31 @@ sâdêto. Dê yo nâ topho, my sû pida phe, vi phûtw châcho, po sotê?
 
 ```shell
 % fanlang list
-Abyssal                                                                         
-Celestial                                                                       
-Common                                                                          
-Draconic                                                                        
-Dwarvish                                                                        
-Elvish                                                                          
-Gnomish                                                                         
-Halfling                                                                        
-Infernal                                                                        
-Lizardfolk                                                                      
-Orcish                                                                          
-Undercommon
+Abyssal        : Eshshishsee zozsuwhoshsh asaawheeziwh! A..whoszoshs ssaswhsu..o
+Celestial      : Ȯoiüöueîîoäuüeêiûȯ, ouịeüêoäaüaėu̇üoäuau âüiûeėûeuäuiüêuäaịii,
+Common         : Uemson noffom, eelom lesyoe exori emaah? Sytteel eudd liiom! Exemooaf
+Draconic       : Vysisa kseeseg ksotsaa' dseyhk yz'sax, 'sosuu'h lsitv dj'sih sir'seed
+Dwarvish       : Nûzhewt co. Phûbê pâpp pûzhûde bî tho di dakf, kâ mû che pe nezhûphû
+Elvish         : Vyöua ycrem mluwre yrhyi syüstem? Uufyias eotdyian fleoe, eswoawyia
+Gnomish        : Di buae haui se miue taui nue, pue heo ruoe puoy roea, hauy diua mey
+Halfling       : Pelee fipo'we'nei, se'hovololi'y, rare'ri'ti'myo ja'to'lilae nybe'wao,
+Infernal       : Po p'daod p'kyid bou t'yagio k'pub x'opuj, p'nba jibi z'eux p'jaabu
+Lizardfolk     : Roast, malic orange earth. Grain musty coconut! Raspberry peanut meat
+Orcish         : Chuche cebru hiko tuma, zutup brumef fubrok cozb ciko, cokot fochi
+Undercommon    : Tniwus, aldupun sqiluth rivujel gijäxaa, aäuyäutäs vixälat vükäe
+
+% fanlang list --names
+Abyssal        : Zwhoshwhshwhe
+Celestial      : Aȯîaûuêeäuêaaüuịäu̇
+Common         : Nana Zeborg
+Draconic       : Jsois
+Dwarvish       : Thi Vudottir
+Elvish         : Smoöbd am Dwesm
+Gnomish        : Tue Nio
+Halfling       : Fybobo'ga'jo'a Da'ro'y Byna'ba'e "Gallant"
+Infernal       : Edmius
+Lizardfolk     : Floral Maple Syrup Phrenolic
+Orcish         : Dih Buzh
 ```
 
 ## Language Packs
@@ -57,7 +70,7 @@ You can override `fanlang`'s default language pack by specifying the `FANLANG_LA
 ```shell
 # Create your ancient_elvish module in campaign/language_pack/ancient_elvish
 % FANLANG_LANGUAGE_PACK=campaign.language_pack fanlang list
-Ancient Elvish
+Ancient Elvish : ...
 ```
 
 ### Setting the Default Language

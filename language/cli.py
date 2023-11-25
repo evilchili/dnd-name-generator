@@ -74,9 +74,12 @@ def names(
 
 
 @app.command()
-def list():
+def list(names: bool = typer.Option(False, help="Display sample names.")):
     for lang, module in supported_languages.items():
-        text = textwrap.shorten(module.Language.text(count=20), width=70, placeholder='')
+        if names:
+            text = str(module.Name)
+        else:
+            text = textwrap.shorten(module.Language.text(count=20), width=70, placeholder='')
         print(f"{lang.title():15s}: {text}")
 
 
