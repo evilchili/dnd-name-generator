@@ -131,57 +131,6 @@ class Language:
             )
         >>> Common.word()
         reibing
-
-    How Words Are Constructed:
-
-        The main interface for callers is word(), which returns a
-        randomly-generated word in the language according to the following
-        algorithm:
-
-        1. Choose a random syllable from the syllable set
-        2. For each grapheme in the syllable
-            3. Choose a random grapheme template
-            4. Choose a random sequence from the language for that grapheme
-            5. Validate the word against the language rules
-        6. Repeat 1-5 until a valid word is generated
-        7. Add a prefix and suffix, if they are defined
-
-        The following graphemes are supported by default:
-            - vowel
-            - consonant
-            - prefix
-            - suffix
-
-        When graphemes are chosen, the following rules are applied:
-            - Every syllable must have at least one vowel
-            - A syllable may never have three consecutive consonants
-
-    How Words Are Validated:
-
-        Once a word has been constructed by populating syllable templates, it is
-        tested against one or more language rules.
-
-        The default rules are defined in language.rules.default_rules; they are:
-            - the word must contain at least one vowel
-            - the word must not contain 3 or more contiguous english vowels
-            - the word must not contain 3 or more contiguous english consonants
-            - the word must not consist of just one vowel, repeated
-
-        Since it is possible to craft Syllables resulting in grapheme
-        selections that rarely or never yield valid words, or rules that
-        reject every word, an ImprobableTemplateError will be thrown if
-        10 successive attempts to create a valid word fail.
-
-    Extending Languages:
-
-        Graphemes are populated by means of callbacks which select a member
-        of the associated weighted set at random. Graphemes can be any string,
-        so long as the Language class has a matching callback.
-
-        To add support for a new grapheme type, define a method on your
-        Language class called get_grapheme_TYPE, where TYPE is the string
-        used in your Syllable templates. Examine test cases in test_types.py
-        for examples.
     """
 
     def __init__(

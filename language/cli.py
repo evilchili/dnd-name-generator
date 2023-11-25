@@ -1,6 +1,6 @@
 import logging
 import os
-import random
+import textwrap
 from enum import Enum
 from types import ModuleType
 
@@ -9,7 +9,6 @@ import language
 import typer
 from rich.logging import RichHandler
 from rich.console import Console
-from rich.markdown import Markdown
 
 app = typer.Typer()
 
@@ -58,23 +57,7 @@ def main(
 @app.command()
 def text(count: int = typer.Option(50, help="The number of words to generate.")):
 
-    phrases = []
-    phrase = []
-    for word in app_state["language"].Language.word(count):
-        phrase.append(str(word))
-        if len(phrase) >= random.randint(1, 12):
-            phrases.append(' '.join(phrase))
-            phrase = []
-    if phrase:
-        phrases.append(' '.join(phrase))
-
-    paragraph = phrases[0].capitalize()
-    for phrase in phrases[1:]:
-        if random.choice([0, 0, 1]):
-            paragraph = paragraph + random.choice('?!.') + ' ' + phrase.capitalize()
-        else:
-            paragraph = paragraph + ', ' + phrase
-    paragraph = paragraph + random.choice('?!.')
+    paragraph = app_state["language"].Language.text(count)
 
     console = Console(width=80)
     console.print(paragraph)
@@ -92,9 +75,9 @@ def names(
 
 @app.command()
 def list():
-    console = Console(width=80)
     for lang, module in supported_languages.items():
-        console.print(Markdown(module.__doc__))
+        text = textwrap.shorten(module.Language.text(count=20), width=70, placeholder='')
+        print(f"{lang.title():15s}: {text}")
 
 
 if __name__ == "__main__":
