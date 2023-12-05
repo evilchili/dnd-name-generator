@@ -67,6 +67,7 @@ class NobleElvishNameGenerator(types.NameGenerator):
                 "ion",
             ],
             1.0,
+            blank=False
         )
 
     def get_surname(self) -> str:
