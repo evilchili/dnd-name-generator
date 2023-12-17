@@ -34,7 +34,7 @@ Abyssal        : Eshshishsee zozsuwhoshsh asaawheeziwh! A..whoszoshs ssaswhsu..o
 Celestial      : Ȯoiüöueîîoäuüeêiûȯ, ouịeüêoäaüaėu̇üoäuau âüiûeėûeuäuiüêuäaịii,
 Common         : Uemson noffom, eelom lesyoe exori emaah? Sytteel eudd liiom! Exemooaf
 Draconic       : Vysisa kseeseg ksotsaa' dseyhk yz'sax, 'sosuu'h lsitv dj'sih sir'seed
-Druidic        | Iagh tiama gih mi'allus? Laanog i heisoh lapt, uuch auh nu ta'ullug
+Druidic        : Iagh tiama gih mi'allus? Laanog i heisoh lapt, uuch auh nu ta'ullug
 Dwarvish       : Nûzhewt co. Phûbê pâpp pûzhûde bî tho di dakf, kâ mû che pe nezhûphû
 Elvish         : Vyöua ycrem mluwre yrhyi syüstem? Uufyias eotdyian fleoe, eswoawyia
 Gnomish        : Di buae haui se miue taui nue, pue heo ruoe puoy roea, hauy diua mey
