@@ -28,6 +28,14 @@ vowels = types.WeightedSet(
     ("u", 1.0)
 )
 
+glottal_stops = types.WeightedSet(
+    ("'a", 0.4),
+    ("'e", 0.25),
+    ("'i", 0.5),
+    ("'o", 0.25),
+    ("'u", 0.5)
+)
+
 suffixes = types.equal_weights(
     [
         "t",
@@ -43,7 +51,14 @@ suffixes = types.equal_weights(
     blank=True,
 )
 
-Language = types.Language(
+
+class DruidicLanguage(types.Language):
+
+    def get_grapheme_glottal_stop(self) -> str:
+        return glottal_stops.random()
+
+
+Language = DruidicLanguage(
     name="druidic",
     vowels=vowels,
     consonants=consonants,
@@ -55,6 +70,7 @@ Language = types.Language(
         (types.Syllable(template="consonant|vowel,vowel"), 0.33),
         (types.Syllable(template="consonant|vowel,vowel,consonant|vowel"), 1.0),
         (types.Syllable(template="consonant,vowel,vowel,consonant,vowel"), 1.0),
+        (types.Syllable(template="consonant,vowel,glottal_stop,consonant,vowel"), 0.5),
     ),
     rules=rules,
     minimum_grapheme_count=1,
