@@ -9,7 +9,7 @@ On Vosh, the continent comprising the eastern hemisphere of Telisar, Ti'Anar is 
 * Beug
 * Ti'Ica
 
-Noble Druidic Names:
+**Noble Druidic Names:**
 * Sa'Eturus
 * Oatas
 * Geugus
