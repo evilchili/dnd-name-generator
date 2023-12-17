@@ -1,13 +1,16 @@
-### Gnomish
+### Druidic
 
-Several distinct dialects of Gnomish exist; a provincial Rock Gnome may not
-understand a Forest Gnome at all! This is "Golden Gnomish," the mother tongue
-of these localized variants, and functions much like Common -- a trader's
-tongue of common understanding.
+On Vosh, the continent comprising the eastern hemisphere of Telisar, Ti'Anar is the language of the Malseid, a race of centuar-like camel/humanoid hybrids native to the Sahwat Desert. The Malseid's ancient traditions have been denigrated by certain so-called learned men of the cities as "pagan nonsense" and falsely associated with both primitive mysticism and eco-terrorism, thus the term *Druidic*. Caring little for what outsiders think, Malseid do not bother to correct this ignorance.
 
-*Nuio duy lao guey houe lo nouo, pia roa tai.*
+*Se'emui uas luulc mich. Co'ade tomr dur feinuh. Naillig mur log sudds! Taocih baamug luhs uit, muucu nuiboh paitut? Laiddu gaitot toirii simt ur!*
 
-**Gnomish Names:**
-* Fuey Voii
-* Juio See
-* Tuai Reaa
+**Druidic Names:**
+* Lu
+* Beug
+* Ti'Ica
+
+Noble Druidic Names:
+* Sa'Eturus
+* Oatas
+* Geugus
+
