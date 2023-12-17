@@ -2,12 +2,6 @@ from language import types
 
 from .rules import rules
 
-# surexit tutbulc filius liuit hagener tutri dierchi tir telih haioid ilau elcu
-# filius gelhig haluidt iuguret amgucant pel amtanndi ho diued diprotant gener
-# tutri o guir imguodant ir degion guragon tagc rodesit elcu guetig equs tres
-# uache, tres uache nouidligi namin ir ni be cas igridu dimedichat guetig hit
-# did braut grefiat guetig nis minn tutbulc hai cenetl in ois oisau
-
 consonants = types.WeightedSet(
     ("b", 0.2),
     ("c", 0.8),
